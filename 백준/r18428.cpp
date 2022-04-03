@@ -38,7 +38,7 @@ void go(int cnt, int index) {
 	*/
 	for (int i = index; i < x.size(); i++) {
 		a[x[i].first][x[i].second] = 'O';
-		go(cnt + 1, index + 1);
+		go(cnt + 1, i + 1);
 		a[x[i].first][x[i].second] = 'X';
 	}
 }
@@ -60,3 +60,10 @@ int main() {
 
 	return 0;
 }
+/*
+완전히 이해되지 않은 부분들이 있음.
+다음에 꼭 다시 풀어볼 문제. 배운것도 많았음.
+1. while (nx >= 0 && nx < n && ny >= 0 && ny < n)
+2. 이런 상황에 재귀 쓰는것.
+3. exit 쓰는것.
+*/
