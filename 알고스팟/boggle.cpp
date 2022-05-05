@@ -9,7 +9,7 @@ bool go(int x, int y, string s, int index) {
 	for (int i = 0; i < 8; i++) {
 		int nx = x + dx[i];
 		int ny = y + dy[i];
-		if (nx >= 0 && nx < 5 && ny >= 0 && y < 5) {
+		if (nx >= 0 && nx < 5 && ny >= 0 && ny < 5) {
 			if (a[nx][ny] == s[index]) {
 				if (go(nx, ny, s, index + 1)) return true;
 			}
