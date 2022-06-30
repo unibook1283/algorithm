@@ -2,6 +2,7 @@
 #include <queue>
 #include <algorithm>
 #include <vector>
+#include <cstring>
 using namespace std;
 int a[21][21];
 int d[21][21];
