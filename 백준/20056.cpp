@@ -6,10 +6,10 @@ struct fire {
 };
 int dx[] = { -1,-1,0,1,1,1,0,-1 };
 int dy[] = { 0,1,1,1,0,-1,-1,-1 };
+vector<fire> fires;
 int main() {
 	int n, m, k;
 	cin >> n >> m >> k;
-	vector<fire> fires;
 	for (int i = 0; i < m; i++) {
 		int x, y, m, s, d;
 		cin >> x >> y >> m >> s >> d;
@@ -70,30 +70,18 @@ int main() {
 						fires.push_back(f);
 					}
 				}
-				else if (fires.size() == 1) {
+				else if (v[i][j].size() == 1) {
 					fires.push_back(v[i][j][0]);
 				}
 			}
 		}
-
-
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				cout << v[i][j].size() << ' ';
-			}
-			cout << '\n';
-		}
 	}
+
 	int ans = 0;
 	for (int i = 0; i < fires.size(); i++) {
-		cout << fires[i].m << '\n';
 		ans += fires[i].m;
 	}
 	cout << ans << '\n';
 
 	return 0;
 }
-/*
-현재 상황: 45번 줄 반복문에서 fire를 fires에서도 지워줘야되는데
-그 itearator를 어떻게 찾을지 모르겠음.
-*/
