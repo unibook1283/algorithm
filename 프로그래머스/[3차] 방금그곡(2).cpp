@@ -3,20 +3,15 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+
 using namespace std;
 
 int duration;
 string name, melody;
-string notes[12] = { "C#", "D#", "F#", "G#", "A#", "C", "D", "E", "F", "G", "A", "B" };
-int stringTimeToInt(string time) {
-    stringstream ss(time);
-    int hour, minute;
-    char temp;
-    ss >> hour >> temp >> minute;
-    return 60 * hour + minute;
-}
-int calDuration(string start, string end) {
-    return stringTimeToInt(end) - stringTimeToInt(start);
+void calDuration(string start, string end) {
+    int s = 60 * stoi(start.substr(0, 2)) + stoi(start.substr(3));
+    int e = 60 * stoi(end.substr(0, 2)) + stoi(end.substr(3));
+    duration = e - s;
 }
 void parseInfo(string info) {
     stringstream ss(info);
@@ -25,23 +20,24 @@ void parseInfo(string info) {
     getline(ss, end, ',');
     getline(ss, name, ',');
     getline(ss, melody, ',');
-    duration = calDuration(start, end);
+    calDuration(start, end);
 }
-string transformMelodyForm(string melody) {
-    for (int i = 0; i < 12; i++) {
-        string note = notes[i];
-        while (1) {
-            int index = melody.find(note);
-            if (index == -1) break;
-            char ch = 'a' + i;
-            string s;
-            s += ch;
-            melody.replace(index, note.length(), s);
-        }
+void replaceAll(string& s, string from, string to) {
+    int pos;
+    while (1) {
+        pos = s.find(from);
+        if (pos == -1) break;
+        s.replace(pos, 2, to);
     }
-    return melody;
 }
-string adjustLengthOfMelody(string melody) {
+void transformMelodyForm(string& s) {
+    replaceAll(s, "C#", "c");
+    replaceAll(s, "D#", "d");
+    replaceAll(s, "F#", "f");
+    replaceAll(s, "G#", "g");
+    replaceAll(s, "A#", "a");
+}
+string adjustLengthOfMelody(string& melody) {
     string ret;
     for (int i = 0; i < duration; i++) {
         ret += melody[i % melody.size()];
@@ -52,21 +48,21 @@ string solution(string m, vector<string> musicinfos) {
     string answer = "";
     vector<pair<pair<int, int>, string>> candidates;
 
-    m = transformMelodyForm(m);
+    transformMelodyForm(m);
     for (int i = 0; i < musicinfos.size(); i++) {
         string info = musicinfos[i];
         parseInfo(info);
-        melody = transformMelodyForm(melody);
+        transformMelodyForm(melody);
         melody = adjustLengthOfMelody(melody);
         if (melody.find(m) != -1) {
-            candidates.push_back({ { -duration, i} , name });
+            candidates.push_back({ {-duration, i}, name });
         }
     }
-
+   
     if (candidates.empty()) {
         return "(None)";
     }
-
+    
     sort(candidates.begin(), candidates.end());
     answer = candidates.front().second;
 
