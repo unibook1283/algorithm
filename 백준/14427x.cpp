@@ -3,22 +3,22 @@
 #include <vector>
 #include <limits.h>
 using namespace std;
-vector<int> a;
+vector<int> arr;
 struct SegmentTree {
 	int n;
 	vector<int> v;	// index
-	SegmentTree(vector<int> array) {
-		n = array.size();
+	SegmentTree() {
+		n = arr.size();
 		v.resize(4 * n);
-		init(array, 1, 0, n - 1);
+		init(1, 0, n - 1);
 	}
-	int init(vector<int> array, int node, int left, int right) {
+	int init(int node, int left, int right) {
 		if (left == right)
 			return v[node] = left;
 		int mid = (left + right) / 2;
 		return v[node] = minIndex(
-			init(array, 2 * node, left, mid),
-			init(array, 2 * node + 1, mid + 1, right)
+			init(2 * node, left, mid),
+			init(2 * node + 1, mid + 1, right)
 		);
 	}
 	int query(int left, int right, int node, int nodeLeft, int nodeRight) {
@@ -50,8 +50,8 @@ struct SegmentTree {
 		return update(index, value, 1, 0, n - 1);
 	}
 	int minIndex(int x, int y) {
-		if (a[x] == a[y]) return x < y ? x : y;
-		return a[x] < a[y] ? x : y;
+		if (arr[x] == arr[y]) return x < y ? x : y;
+		return arr[x] < arr[y] ? x : y;
 	}
 };
 int main() {
@@ -60,11 +60,11 @@ int main() {
 	cout.tie(nullptr);
 	int n;
 	cin >> n;
-	a.resize(n);
+	arr.resize(n);
 	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+		cin >> arr[i];
 	}
-	SegmentTree st(a);
+	SegmentTree st;
 
 	int m;
 	cin >> m;
@@ -76,7 +76,7 @@ int main() {
 			int index, value;
 			cin >> index >> value;
 			index--;
-			a[index] = value;
+			arr[index] = value;
 			st.update(index, value);
 		}
 		else {
